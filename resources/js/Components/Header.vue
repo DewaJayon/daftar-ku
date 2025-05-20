@@ -1,10 +1,18 @@
 <script setup>
+import { usePage, Link } from "@inertiajs/vue3";
+
+const page = usePage();
+
 const toggleHamburger = () => {
     const sidebar = document.querySelector("#sidebar");
     const main = document.querySelector("#main");
     sidebar.classList.toggle("active");
     main.classList.toggle("active");
 };
+
+// const logout = () => {
+//     route()
+// }
 </script>
 
 <template>
@@ -122,10 +130,10 @@ const toggleHamburger = () => {
                             <div class="user-menu d-flex">
                                 <div class="user-name text-end me-3">
                                     <h6 class="mb-0 text-gray-600">
-                                        John Ducky
+                                        {{ page.props.auth.user.name }}
                                     </h6>
                                     <p class="mb-0 text-sm text-gray-600">
-                                        Administrator
+                                        User
                                     </p>
                                 </div>
                                 <div class="user-img d-flex align-items-center">
@@ -141,7 +149,9 @@ const toggleHamburger = () => {
                             style="min-width: 11rem"
                         >
                             <li>
-                                <h6 class="dropdown-header">Hello, John!</h6>
+                                <h6 class="dropdown-header">
+                                    Hello, {{ page.props.auth.user.name }}!
+                                </h6>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="#"
@@ -160,11 +170,15 @@ const toggleHamburger = () => {
                                 <hr class="dropdown-divider" />
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#"
-                                    ><i
+                                <Link
+                                    class="dropdown-item"
+                                    :href="route('logout')"
+                                    method="post"
+                                >
+                                    <i
                                         class="icon-mid bi bi-box-arrow-left me-2"
                                     ></i>
-                                    Logout</a
+                                    Logout</Link
                                 >
                             </li>
                         </ul>

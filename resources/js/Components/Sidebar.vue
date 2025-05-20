@@ -3,6 +3,10 @@ import { Link } from "@inertiajs/vue3";
 
 import sidebarToggle from "@/utils/sidebar-toggle.js";
 import DarkMode from "./DarkMode.vue";
+import { onMounted, ref } from "vue";
+
+const sidebar = ref(null);
+// const active = ref(false);
 
 const toggleHamburger = () => {
     const sidebar = document.querySelector("#sidebar");
@@ -11,9 +15,9 @@ const toggleHamburger = () => {
     main.classList.toggle("active");
 };
 
-const toggleSidebarSubMenu = (el) => {
-    sidebarToggle(el);
-};
+onMounted(() => {
+    sidebarToggle(sidebar);
+});
 </script>
 <template>
     <div id="sidebar">
@@ -37,29 +41,46 @@ const toggleSidebarSubMenu = (el) => {
                 <ul class="menu">
                     <li class="sidebar-title">Menu</li>
 
-                    <li class="sidebar-item active">
+                    <li
+                        class="sidebar-item"
+                        :class="{
+                            ' active': route().current('home'),
+                        }"
+                    >
                         <Link :href="route('home')" class="sidebar-link">
                             <i class="bi bi-grid-fill"></i>
                             <span>Dashboard</span>
                         </Link>
                     </li>
 
-                    <li class="sidebar-item has-sub">
-                        <a
-                            @click="toggleSidebarSubMenu(this)"
-                            href="#"
-                            class="sidebar-link"
-                        >
+                    <li
+                        class="sidebar-item has-sub"
+                        :class="{
+                            ' active': route().current('projects.*'),
+                        }"
+                    >
+                        <a href="#" class="sidebar-link">
                             <i class="bi bi-stack"></i>
                             <span>Management</span>
                         </a>
 
-                        <ul class="submenu">
-                            <li class="submenu-item">
-                                <a
-                                    href="component-accordion.html"
+                        <ul
+                            class="submenu"
+                            :class="{
+                                ' submenu-open': route().current('projects.*'),
+                            }"
+                        >
+                            <li
+                                class="submenu-item"
+                                :class="{
+                                    ' active':
+                                        route().current('projects.index'),
+                                }"
+                            >
+                                <Link
+                                    :href="route('projects.index')"
                                     class="submenu-link"
-                                    >Project</a
+                                    >Project</Link
                                 >
                             </li>
                         </ul>

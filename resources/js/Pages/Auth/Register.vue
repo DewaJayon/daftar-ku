@@ -1,10 +1,13 @@
 <script setup>
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import InputError from "@/Components/ui/InputError.vue";
+import TextInput from "@/Components/ui/TextInput.vue";
 import InputLabel from "@/Components/ui/InputLabel.vue";
 import PrimaryButton from "@/Components/ui/PrimaryButton.vue";
-import TextInput from "@/Components/ui/TextInput.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
+
+const showPassword = ref(false);
 
 const form = useForm({
     name: "",
@@ -21,101 +24,191 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Login" />
     <GuestLayout>
-        <Head title="Register" />
         <div class="card">
             <div class="card-header mb-1 pb-0">
                 <h2 class="card-title text-center">Register</h2>
             </div>
             <div class="card-content">
                 <div class="card-body">
-                    <form @submit.prevent="submit">
-                        <div>
-                            <InputLabel for="name" value="Nama" />
+                    <form class="form form-vertical" @submit.prevent="submit">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group has-icon-left">
+                                        <InputLabel
+                                            for="email-id-icon"
+                                            value="Nama"
+                                        />
+                                        <div class="position-relative">
+                                            <TextInput
+                                                type="text"
+                                                v-model="form.name"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.name,
+                                                }"
+                                                placeholder="Nama"
+                                                id="email-id-icon"
+                                            />
+                                            <InputError
+                                                :message="form.errors.name"
+                                            />
+                                            <div class="form-control-icon">
+                                                <i
+                                                    class="bi bi-person-circle"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <TextInput
-                                id="name"
-                                type="text"
-                                v-model="form.name"
-                                required
-                                autofocus
-                                autocomplete="name"
-                            />
+                                <div class="col-12">
+                                    <div class="form-group has-icon-left">
+                                        <InputLabel
+                                            for="email-id-icon"
+                                            value="Email"
+                                        />
+                                        <div class="position-relative">
+                                            <TextInput
+                                                type="text"
+                                                v-model="form.email"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.email,
+                                                }"
+                                                placeholder="Email"
+                                                id="email-id-icon"
+                                            />
+                                            <InputError
+                                                :message="form.errors.email"
+                                            />
+                                            <div class="form-control-icon">
+                                                <i class="bi bi-envelope"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.name"
-                            />
-                        </div>
+                                <div class="col-12">
+                                    <div class="form-group has-icon-left">
+                                        <InputLabel
+                                            for="password-id-icon"
+                                            value="Password"
+                                        />
+                                        <div class="position-relative">
+                                            <TextInput
+                                                v-model="form.password"
+                                                :type="
+                                                    showPassword
+                                                        ? 'text'
+                                                        : 'password'
+                                                "
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.password,
+                                                }"
+                                                placeholder="Password"
+                                                id="password-id-icon"
+                                            />
 
-                        <div class="mt-4">
-                            <InputLabel for="email" value="Email" />
+                                            <div
+                                                class="password-toggle-icon"
+                                                @click="
+                                                    showPassword = !showPassword
+                                                "
+                                            >
+                                                <i
+                                                    :class="
+                                                        showPassword
+                                                            ? 'bi bi-eye-slash'
+                                                            : 'bi bi-eye'
+                                                    "
+                                                ></i>
+                                            </div>
 
-                            <TextInput
-                                id="email"
-                                type="email"
-                                class="mt-1 block w-full"
-                                v-model="form.email"
-                                required
-                                autocomplete="username"
-                            />
+                                            <InputError
+                                                :message="form.errors.password"
+                                            />
 
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.email"
-                            />
-                        </div>
+                                            <div class="form-control-icon">
+                                                <i class="bi bi-lock"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <div class="mt-4">
-                            <InputLabel for="password" value="Password" />
+                                <div class="col-12">
+                                    <div class="form-group has-icon-left">
+                                        <InputLabel
+                                            for="password-id-icon"
+                                            value="Confirm Password"
+                                        />
+                                        <div class="position-relative">
+                                            <TextInput
+                                                v-model="
+                                                    form.password_confirmation
+                                                "
+                                                :type="
+                                                    showPassword
+                                                        ? 'text'
+                                                        : 'password'
+                                                "
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors
+                                                            .password_confirmation,
+                                                }"
+                                                placeholder="Confirm Password"
+                                                id="password-id-icon"
+                                            />
 
-                            <TextInput
-                                id="password"
-                                type="password"
-                                v-model="form.password"
-                                required
-                                autocomplete="new-password"
-                            />
+                                            <div
+                                                class="password-toggle-icon"
+                                                @click="
+                                                    showPassword = !showPassword
+                                                "
+                                            >
+                                                <i
+                                                    :class="
+                                                        showPassword
+                                                            ? 'bi bi-eye-slash'
+                                                            : 'bi bi-eye'
+                                                    "
+                                                ></i>
+                                            </div>
 
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.password"
-                            />
-                        </div>
+                                            <InputError
+                                                :message="form.errors.password"
+                                            />
 
-                        <div class="mt-4">
-                            <InputLabel
-                                for="password_confirmation"
-                                value="Confirm Password"
-                            />
-
-                            <TextInput
-                                id="password_confirmation"
-                                type="password"
-                                class="mt-1 block w-full"
-                                v-model="form.password_confirmation"
-                                required
-                                autocomplete="new-password"
-                            />
-
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.password_confirmation"
-                            />
-                        </div>
-
-                        <div class="mt-4">
-                            <Link :href="route('login')">
-                                Sudah punya akun?
-                            </Link>
-
-                            <PrimaryButton
-                                class="d-flex mx-auto mt-3"
-                                :class="{ 'opacity-25': form.processing }"
-                                :disabled="form.processing"
-                            >
-                                Register
-                            </PrimaryButton>
+                                            <div class="form-control-icon">
+                                                <i class="bi bi-lock"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <Link :href="route('login')"
+                                        >Sudah Punya Akun? Login</Link
+                                    >
+                                </div>
+                                <div
+                                    class="col-12 d-flex justify-content-center mt-4"
+                                >
+                                    <PrimaryButton
+                                        type="submit"
+                                        class="me-1"
+                                        :class="{
+                                            'opacity-25': form.processing,
+                                        }"
+                                        :disabled="form.processing"
+                                    >
+                                        Register
+                                    </PrimaryButton>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -123,3 +216,14 @@ const submit = () => {
         </div>
     </GuestLayout>
 </template>
+
+<style>
+.password-toggle-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 100;
+}
+</style>

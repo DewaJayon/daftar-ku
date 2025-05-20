@@ -6,6 +6,9 @@ import Checkbox from "@/Components/ui/Checkbox.vue";
 import TextInput from "@/Components/ui/TextInput.vue";
 import InputLabel from "@/Components/ui/InputLabel.vue";
 import PrimaryButton from "@/Components/ui/PrimaryButton.vue";
+import { ref } from "vue";
+
+const showPassword = ref(false);
 
 defineProps({
     canResetPassword: {
@@ -77,7 +80,11 @@ const submit = () => {
                                         <div class="position-relative">
                                             <TextInput
                                                 v-model="form.password"
-                                                type="password"
+                                                :type="
+                                                    showPassword
+                                                        ? 'text'
+                                                        : 'password'
+                                                "
                                                 :class="{
                                                     'is-invalid':
                                                         form.errors.password,
@@ -86,9 +93,25 @@ const submit = () => {
                                                 id="password-id-icon"
                                             />
 
+                                            <div
+                                                class="password-toggle-icon"
+                                                @click="
+                                                    showPassword = !showPassword
+                                                "
+                                            >
+                                                <i
+                                                    :class="
+                                                        showPassword
+                                                            ? 'bi bi-eye-slash'
+                                                            : 'bi bi-eye'
+                                                    "
+                                                ></i>
+                                            </div>
+
                                             <InputError
                                                 :message="form.errors.password"
                                             />
+
                                             <div class="form-control-icon">
                                                 <i class="bi bi-lock"></i>
                                             </div>
@@ -143,3 +166,14 @@ const submit = () => {
         </div>
     </GuestLayout>
 </template>
+
+<style>
+.password-toggle-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 100;
+}
+</style>
