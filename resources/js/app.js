@@ -8,6 +8,12 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { createApp, h } from "vue";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 
+import DataTablesLib from "datatables.net-bs5";
+import DataTable from "datatables.net-vue3";
+import "datatables.net-responsive-bs5";
+
+DataTable.use(DataTablesLib);
+
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
@@ -21,6 +27,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .component("DataTable", DataTable)
             .mount(el);
     },
     progress: {

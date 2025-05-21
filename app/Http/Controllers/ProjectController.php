@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use App\Models\CustomerType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,7 +14,14 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Projects/Index');
+
+        $customers      = Customer::with(['user', 'customerType'])->get();
+        $customerTypes  = CustomerType::all();
+
+        return Inertia::render('Projects/Index', [
+            'customers'     => $customers,
+            'customerTypes' => $customerTypes
+        ]);
     }
 
     /**
@@ -28,7 +37,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
