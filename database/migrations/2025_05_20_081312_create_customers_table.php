@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('customer_type_id');
             $table->string('name');
+            $table->string('slug');
             $table->string('project_name');
             $table->string('tech_stack');
             $table->enum('status', ['pending', 'in_progres', 'completed', 'cancelled'])->default('pending');

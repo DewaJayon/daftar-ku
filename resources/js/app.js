@@ -10,7 +10,6 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 
 import DataTablesLib from "datatables.net-bs5";
 import DataTable from "datatables.net-vue3";
-import "datatables.net-responsive-bs5";
 
 DataTable.use(DataTablesLib);
 

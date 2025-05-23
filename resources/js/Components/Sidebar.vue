@@ -6,7 +6,6 @@ import DarkMode from "./DarkMode.vue";
 import { onMounted, ref } from "vue";
 
 const sidebar = ref(null);
-// const active = ref(false);
 
 const toggleHamburger = () => {
     const sidebar = document.querySelector("#sidebar");
@@ -56,7 +55,9 @@ onMounted(() => {
                     <li
                         class="sidebar-item has-sub"
                         :class="{
-                            ' active': route().current('projects.*'),
+                            ' active':
+                                route().current('projects.*') ||
+                                route().current('customer-type.*'),
                         }"
                     >
                         <a href="#" class="sidebar-link">
@@ -67,7 +68,9 @@ onMounted(() => {
                         <ul
                             class="submenu"
                             :class="{
-                                ' submenu-open': route().current('projects.*'),
+                                ' submenu-open':
+                                    route().current('projects.*') ||
+                                    route().current('customer-type.*'),
                             }"
                         >
                             <li
@@ -81,6 +84,20 @@ onMounted(() => {
                                     :href="route('projects.index')"
                                     class="submenu-link"
                                     >Project</Link
+                                >
+                            </li>
+                            <li
+                                class="submenu-item"
+                                :class="{
+                                    ' active': route().current(
+                                        'customer-type.index'
+                                    ),
+                                }"
+                            >
+                                <Link
+                                    :href="route('customer-type.index')"
+                                    class="submenu-link"
+                                    >Customer Type</Link
                                 >
                             </li>
                         </ul>

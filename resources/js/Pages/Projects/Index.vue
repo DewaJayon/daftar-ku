@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import Create from "./Create.vue";
+import setTableColor from "@/utils/datatable-pagination";
 
 const props = defineProps({
     customers: {
@@ -14,12 +15,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-const setTableColor = () => {
-    document.querySelectorAll(".dt-paging .pagination").forEach((dt) => {
-        dt.classList.add("pagination-primary");
-    });
-};
 
 const edit = () => {
     alert("edit");

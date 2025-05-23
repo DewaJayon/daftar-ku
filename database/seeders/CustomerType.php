@@ -15,6 +15,7 @@ class CustomerType extends Seeder
     {
         ModelsCustomerType::create([
             'name' => 'Mahasiswa',
+            'slug' => 'mahasiswa',
         ]);
     }
 }

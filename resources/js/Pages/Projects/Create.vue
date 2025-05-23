@@ -26,9 +26,9 @@ const form = useForm({
     customer_type: "",
     status: "",
     payment_method: "",
-    amount: 0,
+    amount: Number(),
     is_deposited: false,
-    deposited_amount: 0,
+    deposited_amount: Number(),
 });
 
 const status = [
@@ -170,13 +170,13 @@ const submit = () => {
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <InputLabel
-                                        for="name"
+                                        for="payment-method"
                                         value="Payment Method"
                                     />
                                     <TextInput
                                         type="text"
                                         placeholder="Payment Method"
-                                        id="name"
+                                        id="payment-method"
                                         v-model="form.payment_method"
                                     />
                                 </div>
@@ -189,8 +189,8 @@ const submit = () => {
                                     />
                                     <TextInput
                                         type="number"
-                                        placeholder="Payment Method"
-                                        id="name"
+                                        placeholder="Harga Project"
+                                        id="project-amount"
                                         v-model="form.amount"
                                     />
                                 </div>
