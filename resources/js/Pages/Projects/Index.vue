@@ -1,9 +1,13 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, Link } from "@inertiajs/vue3";
-import { onMounted } from "vue";
+import { Head, Link, router } from "@inertiajs/vue3";
+import { onMounted, ref, watch } from "vue";
 import Create from "./Create.vue";
 import setTableColor from "@/utils/datatable-pagination";
+import IconButton from "@/Components/ui/IconButton.vue";
+import Swal from "sweetalert2";
+import Toast from "@/utils/toast";
+import Edit from "./Edit.vue";
 
 const props = defineProps({
     customers: {
@@ -16,8 +20,42 @@ const props = defineProps({
     },
 });
 
-const edit = () => {
-    alert("edit");
+const tableData = ref(props.customers);
+
+const tableColumns = ref([
+    { data: "name", title: "Name" },
+    { data: "project_name", title: "Project Name" },
+    { data: "tech_stack", title: "Tech Stack" },
+    { data: "customer_type.name", title: "Customer Type" },
+    { data: "status", title: "Status" },
+    { data: "payment.payment_method", title: "Payment Method" },
+    { data: "payment.amount", title: "Amount" },
+    { data: "payment.is_deposited", title: "Is Deposited" },
+    { title: "Aksi" },
+]);
+
+watch(
+    () => props.customers,
+    () => {
+        tableData.value = props.customers;
+    }
+);
+
+const destroy = (slug) => {
+    Swal.fire({
+        title: slug,
+        showCancelButton: true,
+        confirmButtonText: "Hapus!",
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                router.delete(route("projects.destroy", slug));
+                Toast("Data berhasil dihapus!");
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 onMounted(() => {
@@ -77,43 +115,38 @@ onMounted(() => {
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <DataTable class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Dibuat Oleh</th>
-                                        <th>Nama Customer</th>
-                                        <th>Nama Project</th>
-                                        <th>Tech Stack</th>
-                                        <th>Customer Type</th>
-                                        <th>Pembayaran</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="customer in customers"
-                                        :key="customer.id"
-                                        @click="edit"
-                                        style="cursor: pointer"
-                                    >
-                                        <td>{{ customer.user.name }}</td>
-                                        <td>{{ customer.name }}</td>
-                                        <td>{{ customer.project_name }}</td>
-                                        <td>{{ customer.tech_stack }}</td>
-                                        <td>
-                                            {{ customer.customer_type.name }}
-                                        </td>
-                                        <td>Emmanuel</td>
-                                        <td class="text-capitalize">
-                                            {{
-                                                customer.status.replace(
-                                                    "_",
-                                                    " "
-                                                )
-                                            }}
-                                        </td>
-                                    </tr>
-                                </tbody>
+                            <DataTable
+                                class="table table-striped"
+                                :data="tableData"
+                                :columns="tableColumns"
+                            >
+                                <template #column-4="props">
+                                    <td class="text-capitalize">
+                                        {{
+                                            props.rowData.status.replace(
+                                                "_",
+                                                " "
+                                            )
+                                        }}
+                                    </td>
+                                </template>
+                                <template #column-8="props">
+                                    <div class="d-flex">
+                                        <div class="mx-auto">
+                                            <IconButton
+                                                icon="bi bi-trash"
+                                                variant="danger"
+                                                @click="
+                                                    destroy(props.rowData.slug)
+                                                "
+                                            />
+                                            <Edit
+                                                :rowData="props.rowData"
+                                                :customerTypes="customerTypes"
+                                            />
+                                        </div>
+                                    </div>
+                                </template>
                             </DataTable>
                         </div>
                     </div>

@@ -1,37 +1,47 @@
 <script setup>
-import Tabs from "@/Components/ui/tabs/Tabs.vue";
-import Tab from "@/Components/ui/tabs/Tab.vue";
 import Modal from "@/Components/Modal.vue";
-import { useForm } from "@inertiajs/vue3";
-import PrimaryButton from "@/Components/ui/PrimaryButton.vue";
-import { ref } from "vue";
-import InputLabel from "@/Components/ui/InputLabel.vue";
-import TextInput from "@/Components/ui/TextInput.vue";
-import Select from "@/Components/ui/Select.vue";
-import Switch from "@/Components/ui/Switch.vue";
+import IconButton from "@/Components/ui/IconButton.vue";
 import InputError from "@/Components/ui/InputError.vue";
-import Toast from "@/utils/toast";
+import InputLabel from "@/Components/ui/InputLabel.vue";
+import PrimaryButton from "@/Components/ui/PrimaryButton.vue";
+import Select from "@/Components/ui/Select.vue";
 import Spinner from "@/Components/ui/Spinner.vue";
+import Switch from "@/Components/ui/Switch.vue";
+import Tab from "@/Components/ui/tabs/Tab.vue";
+import Tabs from "@/Components/ui/tabs/Tabs.vue";
+import TextInput from "@/Components/ui/TextInput.vue";
+import Toast from "@/utils/toast";
+import { useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 const props = defineProps({
+    rowData: {
+        type: Object,
+        required: true,
+    },
     customerTypes: {
         type: Object,
         required: true,
     },
 });
 
+const modal = ref(null);
+
+const showModal = () => {
+    modal.value?.show();
+};
+
 const form = useForm({
     token: props.token,
-    user_id: props.user_id,
-    name: "",
-    project_name: "",
-    tech_stack: "",
-    customer_type: "",
-    status: "",
-    payment_method: "",
-    amount: Number(),
-    is_deposited: false,
-    deposited_amount: Number(),
+    name: props.rowData.name,
+    project_name: props.rowData.project_name,
+    tech_stack: props.rowData.tech_stack,
+    customer_type: props.rowData.customer_type_id,
+    status: props.rowData.status,
+    payment_method: props.rowData.payment.payment_method,
+    amount: props.rowData.payment.amount,
+    is_deposited: props.rowData.payment.is_deposited === "yes" ? true : false,
+    deposited_amount: props.rowData.payment.deposited_amount,
 });
 
 const status = [
@@ -53,26 +63,25 @@ const status = [
     },
 ];
 
-const modal = ref(null);
-
-const showModal = () => {
-    modal.value?.show();
-};
-
 const submit = () => {
-    form.post(route("projects.store"), {
-        preserveScroll: true,
+    form.put(route("projects.update", props.rowData.slug), {
         onSuccess: () => {
             form.reset();
             modal.value?.hide();
-            Toast("Data berhasil disimpan!");
+            Toast("Data berhasil diperbarui!");
         },
     });
 };
 </script>
 
 <template>
-    <PrimaryButton @click="showModal">Tambah Project</PrimaryButton>
+    <IconButton
+        icon="bi bi-pencil"
+        class="mx-2"
+        variant="warning"
+        @click="showModal"
+    />
+
     <Modal ref="modal" title="Tambah Project">
         <template #body>
             <Tabs>
@@ -156,23 +165,12 @@ const submit = () => {
                                                 value="Customer Type"
                                             />
                                             <Select
-                                                name="Customer Type"
-                                                id="customer-type"
                                                 v-model="form.customer_type"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors
-                                                            .customer_type,
-                                                }"
                                             >
                                                 <option
                                                     v-for="customerType in customerTypes"
                                                     :value="customerType.id"
                                                     :key="customerType.id"
-                                                    :selected="
-                                                        customerType.id ==
-                                                        form.customer_type
-                                                    "
                                                 >
                                                     {{ customerType.name }}
                                                 </option>
