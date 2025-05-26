@@ -1,7 +1,50 @@
 <script setup>
 import { usePage, Link } from "@inertiajs/vue3";
+import { ref, watch } from "vue";
+import Badge from "./ui/Badge.vue";
 
 const page = usePage();
+
+const notification = ref(page.props.notification);
+
+const notificationLenghtRef = ref(notification.value.length);
+const notificationDropdownRef = ref("");
+const profileDropdownRef = ref("");
+
+watch(
+    () => page.props.notification,
+    (newNotification) => {
+        notification.value = newNotification;
+        notificationLenghtRef.value = newNotification.length;
+    },
+    { deep: true }
+);
+
+const notificationDropdown = () => {
+    const notificationDropdown = document.querySelector(
+        "#dropdownNotificationButton"
+    );
+
+    if (notificationDropdown.classList.contains("show")) {
+        notificationDropdown.classList.remove("show");
+        notificationDropdownRef.value = "";
+        return;
+    }
+
+    notificationDropdownRef.value = "show";
+};
+
+const profileDropdown = () => {
+    const profileDropdown = document.querySelector("#dropdownProfileButton");
+
+    if (profileDropdown.classList.contains("show")) {
+        profileDropdown.classList.remove("show");
+        profileDropdownRef.value = "";
+        return;
+    }
+
+    profileDropdownRef.value = "show";
+};
 
 const toggleHamburger = () => {
     const sidebar = document.querySelector("#sidebar");
@@ -9,10 +52,6 @@ const toggleHamburger = () => {
     sidebar.classList.toggle("active");
     main.classList.toggle("active");
 };
-
-// const logout = () => {
-//     route()
-// }
 </script>
 
 <template>
@@ -47,75 +86,72 @@ const toggleHamburger = () => {
                             <a
                                 class="nav-link active dropdown-toggle text-gray-600"
                                 href="#"
+                                id="dropdownNotificationButton"
                                 data-bs-toggle="dropdown"
                                 data-bs-display="static"
                                 aria-expanded="false"
+                                @click="notificationDropdown()"
+                                :class="notificationDropdownRef"
                             >
                                 <i class="bi bi-bell bi-sub fs-4"></i>
-                                <span class="badge badge-notification bg-danger"
-                                    >7</span
+                                <span
+                                    class="badge badge-notification bg-danger"
+                                    >{{ notificationLenghtRef }}</span
                                 >
                             </a>
                             <ul
                                 class="dropdown-menu dropdown-menu-end notification-dropdown"
+                                :class="notificationDropdownRef"
                                 aria-labelledby="dropdownMenuButton"
                             >
                                 <li class="dropdown-header">
                                     <h6>Notifications</h6>
                                 </li>
-                                <li class="dropdown-item notification-item">
-                                    <a
+                                <li
+                                    class="dropdown-item notification-item"
+                                    v-for="notification in page.props
+                                        .notification"
+                                    :key="notification.id"
+                                >
+                                    <Link
                                         class="d-flex align-items-center"
                                         href="#"
                                     >
                                         <div
-                                            class="notification-icon bg-primary"
-                                        >
-                                            <i class="bi bi-cart-check"></i>
-                                        </div>
-                                        <div class="notification-text ms-4">
-                                            <p
-                                                class="notification-title font-bold"
-                                            >
-                                                Successfully check out
-                                            </p>
-                                            <p
-                                                class="notification-subtitle font-thin text-sm"
-                                            >
-                                                Order ID #256
-                                            </p>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="dropdown-item notification-item">
-                                    <a
-                                        class="d-flex align-items-center"
-                                        href="#"
-                                    >
-                                        <div
-                                            class="notification-icon bg-success"
+                                            class="notification-icon bg-warning text-dark"
                                         >
                                             <i
-                                                class="bi bi-file-earmark-check"
-                                            ></i>
+                                                class="bi bi-exclamation-triangle-fill"
+                                            />
                                         </div>
                                         <div class="notification-text ms-4">
                                             <p
                                                 class="notification-title font-bold"
                                             >
-                                                Homework submitted
+                                                {{ notification.project_name }}
+                                            </p>
+                                            <p
+                                                class="notification-subtitle font-thin text-sm text-uppercase"
+                                            >
+                                                {{ notification.name }}
                                             </p>
                                             <p
                                                 class="notification-subtitle font-thin text-sm"
                                             >
-                                                Algebra math homework
+                                                <Badge
+                                                    :text="notification.status"
+                                                    class="text-uppercase text-dark"
+                                                />
                                             </p>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </li>
-                                <li>
-                                    <p class="text-center py-2 mb-0">
-                                        <a href="#">See all notification</a>
+                                <li
+                                    class="dropdown-footer"
+                                    v-if="notificationLenghtRef === 0"
+                                >
+                                    <p class="font-bold py-2 text-center">
+                                        Tidak ada notifikasi
                                     </p>
                                 </li>
                             </ul>
@@ -125,7 +161,10 @@ const toggleHamburger = () => {
                         <a
                             href="#"
                             data-bs-toggle="dropdown"
+                            data-bs-display="dynamic"
                             aria-expanded="false"
+                            id="dropdownProfileButton"
+                            @click="profileDropdown()"
                         >
                             <div class="user-menu d-flex">
                                 <div class="user-name text-end me-3">
@@ -147,6 +186,7 @@ const toggleHamburger = () => {
                             class="dropdown-menu dropdown-menu-end"
                             aria-labelledby="dropdownMenuButton"
                             style="min-width: 11rem"
+                            :class="profileDropdownRef"
                         >
                             <li>
                                 <h6 class="dropdown-header">
