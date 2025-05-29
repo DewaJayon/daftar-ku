@@ -1,6 +1,13 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+
+const props = defineProps({
+    projectsCompleted: Number,
+    projectsPending: Number,
+    projectsInProgress: Number,
+    projectsCancelled: Number,
+});
 </script>
 
 <template>
@@ -23,8 +30,12 @@ import { Head } from "@inertiajs/vue3";
                                         <div
                                             class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
                                         >
-                                            <div class="stats-icon purple mb-2">
-                                                <i class="iconly-boldShow"></i>
+                                            <div
+                                                class="bg-success p-3 d-flex align-items-center justify-content-center rounded-3"
+                                            >
+                                                <i
+                                                    class="bi bi-check-circle-fill fs-2 d-flex align-items-center justify-content-center text-dark"
+                                                ></i>
                                             </div>
                                         </div>
                                         <div
@@ -33,10 +44,10 @@ import { Head } from "@inertiajs/vue3";
                                             <h6
                                                 class="text-muted font-semibold"
                                             >
-                                                Profile Views
+                                                Project Selesai
                                             </h6>
                                             <h6 class="font-extrabold mb-0">
-                                                112.000
+                                                {{ props.projectsCompleted }}
                                             </h6>
                                         </div>
                                     </div>
@@ -50,9 +61,11 @@ import { Head } from "@inertiajs/vue3";
                                         <div
                                             class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
                                         >
-                                            <div class="stats-icon blue mb-2">
+                                            <div
+                                                class="bg-warning p-3 d-flex align-items-center justify-content-center rounded-3"
+                                            >
                                                 <i
-                                                    class="iconly-boldProfile"
+                                                    class="bi bi-exclamation-circle-fill fs-2 d-flex align-items-center justify-content-center text-dark"
                                                 ></i>
                                             </div>
                                         </div>
@@ -62,10 +75,10 @@ import { Head } from "@inertiajs/vue3";
                                             <h6
                                                 class="text-muted font-semibold"
                                             >
-                                                Followers
+                                                Project Tertunda
                                             </h6>
                                             <h6 class="font-extrabold mb-0">
-                                                183.000
+                                                {{ props.projectsPending }}
                                             </h6>
                                         </div>
                                     </div>
@@ -79,9 +92,11 @@ import { Head } from "@inertiajs/vue3";
                                         <div
                                             class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
                                         >
-                                            <div class="stats-icon green mb-2">
+                                            <div
+                                                class="bg-primary p-3 d-flex align-items-center justify-content-center rounded-3"
+                                            >
                                                 <i
-                                                    class="iconly-boldAdd-User"
+                                                    class="bi bi-gear fs-2 d-flex align-items-center justify-content-center text-dark"
                                                 ></i>
                                             </div>
                                         </div>
@@ -91,10 +106,10 @@ import { Head } from "@inertiajs/vue3";
                                             <h6
                                                 class="text-muted font-semibold"
                                             >
-                                                Following
+                                                Project sedang berjalan
                                             </h6>
                                             <h6 class="font-extrabold mb-0">
-                                                80.000
+                                                {{ props.projectsInProgress }}
                                             </h6>
                                         </div>
                                     </div>
@@ -108,9 +123,11 @@ import { Head } from "@inertiajs/vue3";
                                         <div
                                             class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
                                         >
-                                            <div class="stats-icon red mb-2">
+                                            <div
+                                                class="bg-danger p-3 d-flex align-items-center justify-content-center rounded-3"
+                                            >
                                                 <i
-                                                    class="iconly-boldBookmark"
+                                                    class="bi bi-trash-fill fs-2 d-flex align-items-center justify-content-center text-dark"
                                                 ></i>
                                             </div>
                                         </div>
@@ -120,10 +137,10 @@ import { Head } from "@inertiajs/vue3";
                                             <h6
                                                 class="text-muted font-semibold"
                                             >
-                                                Saved Post
+                                                Project dibatalkan
                                             </h6>
                                             <h6 class="font-extrabold mb-0">
-                                                112
+                                                {{ props.projectsCancelled }}
                                             </h6>
                                         </div>
                                     </div>
