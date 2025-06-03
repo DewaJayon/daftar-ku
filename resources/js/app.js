@@ -10,8 +10,9 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 
 import DataTablesLib from "datatables.net-bs5";
 import DataTable from "datatables.net-vue3";
-
 DataTable.use(DataTablesLib);
+
+import VueApexCharts from "vue3-apexcharts";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -26,6 +27,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(VueApexCharts)
             .component("DataTable", DataTable)
             .mount(el);
     },

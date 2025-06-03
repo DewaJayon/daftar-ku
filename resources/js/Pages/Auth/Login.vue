@@ -136,14 +136,6 @@ const submit = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-12">
-                                    <div class="mt-2">
-                                        Belum Punya Akun?
-                                        <Link :href="route('register')"
-                                            >Register</Link
-                                        >
-                                    </div>
-                                </div>
                                 <div
                                     class="col-12 d-flex justify-content-center mt-4"
                                 >
