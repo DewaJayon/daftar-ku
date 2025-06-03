@@ -177,7 +177,7 @@ const toggleHamburger = () => {
                                 </div>
                                 <div class="user-img d-flex align-items-center">
                                     <div class="avatar avatar-md">
-                                        <img src="#" />
+                                        <img src="/assets/daftarku-logo.png" />
                                     </div>
                                 </div>
                             </div>
@@ -194,16 +194,13 @@ const toggleHamburger = () => {
                                 </h6>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#"
-                                    ><i class="icon-mid bi bi-person me-2"></i>
-                                    My Profile</a
+                                <Link
+                                    class="dropdown-item"
+                                    :href="route('profile.edit')"
                                 >
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"
-                                    ><i class="icon-mid bi bi-gear me-2"></i>
-                                    Settings</a
-                                >
+                                    <i class="icon-mid bi bi-person me-2"></i>
+                                    Profile
+                                </Link>
                             </li>
 
                             <li>
