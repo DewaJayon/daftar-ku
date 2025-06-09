@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $projectsCompleted  = Customer::where('status', 'completed')->count();
         $projectsPending    = Customer::where('status', 'pending')->count();
         $projectsInProgress = Customer::where('status', 'in_progres')->count();
-        $projectsCancelled  = Customer::where('status', 'canceled')->count();
+        $projectsCancelled  = Customer::where('status', 'cancelled')->count();
 
         return Inertia::render('Dashboard/Index', [
             'projectsCompleted'     => $projectsCompleted,
